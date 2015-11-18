@@ -15,6 +15,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @Autowired
     private UserRepository userRepository;
+    
+    @Autowired
     private BookRepository bookRepository;
 
     @RequestMapping("/users")
