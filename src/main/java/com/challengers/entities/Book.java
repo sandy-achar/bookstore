@@ -38,6 +38,9 @@ public class Book implements Serializable {
     @Column(name = "isbn")
     private String isbn;
 
+    @Column(name = "language")
+    private String language;
+
     @Column(name = "price")
     private double price;
 
@@ -50,13 +53,14 @@ public class Book implements Serializable {
     public Book() {
     }
 
-    public Book(String book_title, Set<String> author_name, Set<String> publisher_name, int published_year, String isbn, double price, int quantity, int sold) {
+    public Book(String book_title, Set<String> author_name, Set<String> publisher_name, int published_year, String isbn, String language,double price, int quantity, int sold) {
         this.bookId = UniqueIdGenerator.generateId();
         this.bookTitle = book_title;
         this.authorNames = author_name;
         this.publisherNames = publisher_name;
         this.publishedYear = published_year;
         this.isbn = isbn;
+        this.language = language;
         this.price = price;
         this.quantity = quantity;
         this.sold = sold;
@@ -108,6 +112,14 @@ public class Book implements Serializable {
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public String getLanguage() {
+        return language;
+    }
+
+    public void setLanguage(String language) {
+        this.language = language;
     }
 
     public double getPrice() {

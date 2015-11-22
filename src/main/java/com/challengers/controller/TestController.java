@@ -15,9 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class TestController {
     @Autowired
     private UserRepository userRepository;
-    
-    @Autowired
-    private BookRepository bookRepository;
 
     @RequestMapping("/users")
     public String test() throws JsonProcessingException {
@@ -25,9 +22,4 @@ public class TestController {
         return objectMapper.writeValueAsString(userRepository.findAll());
     }
 
-    @RequestMapping("/books")
-    public String getBooks() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bookRepository.findAll());
-    }
 }

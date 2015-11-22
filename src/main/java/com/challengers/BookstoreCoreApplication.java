@@ -24,7 +24,7 @@ public class BookstoreCoreApplication {
         Set<BookTransactionInfo> bookTransactionInfos = new HashSet<>();
         bookTransactionInfos.add(new BookTransactionInfo(1978185706830476223L, 2));
         Transaction transaction = new Transaction(4696283733126237149L, bookTransactionInfos);
-        transactionRepository.save(transaction);
+       // transactionRepository.save(transaction);
 
        /* BookRepository bookRepository = applicationContext.getBean(BookRepository.class);
         Set<String> authors = new HashSet<>();
@@ -32,7 +32,7 @@ public class BookstoreCoreApplication {
         authors.add("Tony Cole");
         Set<String> publishers = new HashSet<>();
         publishers.add("abc publications");
-        Book book1 = new Book("NoSQL", authors, publishers, 2004, "abc123456789", 30.50, 5, 2);
+        Book book1 = new Book("NoSQL", authors, publishers, 2004, "abc123456789", "English", 30.50, 5, 2);
         bookRepository.save(book1);*/
 
       /*  UserRepository userRepository = applicationContext.getBean(UserRepository.class);
