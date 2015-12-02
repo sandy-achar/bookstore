@@ -13,13 +13,5 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TestController {
-    @Autowired
-    private UserRepository userRepository;
-
-    @RequestMapping("/users")
-    public String test() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(userRepository.findAll());
-    }
 
 }

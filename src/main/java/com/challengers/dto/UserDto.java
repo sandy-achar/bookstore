@@ -1,57 +1,34 @@
-package com.challengers.entities;
-
-
-import com.challengers.util.UniqueIdGenerator;
-
-import javax.persistence.*;
-import java.io.Serializable;
+package com.challengers.dto;
 
 /**
- * Created by Malika(mxp134930) on 11/6/2015.
+ * Created by Malika(mxp134930) on 11/30/2015.
  */
+public class UserDto {
 
-@Table(name = "user")
-@Entity
-public class User implements Serializable {
-    @Id
-    @Column(name = "user_id")
-    private Long userId;
-
-    @Column(name = "username")
     private String userName;
 
-    @Column(name = "password")
     private String password;
 
-    @Column(name = "first_name")
     private String firstName;
 
-    @Column(name = "middle_name")
     private String middleName;
 
-    @Column(name = "last_name")
     private String lastName;
 
-    @Column(name = "street")
     private String street;
 
-    @Column(name = "city")
     private String city;
 
-    @Column(name = "zip_code")
     private String zipCode;
 
-    @Column(name = "state")
     private String state;
 
-    @Column(name = "country")
     private String country;
 
-    public User() {
+    public UserDto() {
     }
 
-    public User(String userName, String password, String firstName, String middleName, String lastName, String street, String city, String zipCode, String state, String country) {
-        this.userId = UniqueIdGenerator.generateId();
+    public UserDto(String userName, String password, String firstName, String middleName, String lastName, String street, String city, String zipCode, String state, String country) {
         this.userName = userName;
         this.password = password;
         this.firstName = firstName;
@@ -62,14 +39,6 @@ public class User implements Serializable {
         this.zipCode = zipCode;
         this.state = state;
         this.country = country;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getUserName() {
@@ -150,22 +119,5 @@ public class User implements Serializable {
 
     public void setCountry(String country) {
         this.country = country;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "userId=" + userId +
-                ", userName='" + userName + '\'' +
-                ", password='" + password + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", middleName='" + middleName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", street='" + street + '\'' +
-                ", city='" + city + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", state='" + state + '\'' +
-                ", country='" + country + '\'' +
-                '}';
     }
 }
