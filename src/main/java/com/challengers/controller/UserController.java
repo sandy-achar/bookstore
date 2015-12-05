@@ -32,16 +32,14 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody LoginUser loginUser){
 
-        System.out.println("A login was attempted!");
-        System.out.println("userName: " + loginUser.getUserName());
-        System.out.println("password: " + loginUser.getPassword());
+        System.out.println("A login was attempted with username: " + loginUser.getUserName());
 
         String userName = loginUser.getUserName();
 
         User user = userRepository.findByUserName(userName);
         HttpHeaders httpHeaders = new HttpHeaders();
         if(user != null){
-            System.out.println("User Name found!");
+
             httpHeaders.setLocation(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .buildAndExpand()
@@ -49,12 +47,13 @@ public class UserController {
 
             if (user.getPassword().equals(loginUser.getPassword())) {
 
-                return new ResponseEntity<>("Success Login!", httpHeaders, HttpStatus.OK);
+                System.out.println("Login was successful.");
+                return new ResponseEntity<>("Success", httpHeaders, HttpStatus.OK);
 
             } else {
 
-                System.out.println("The actual password: " + user.getPassword());
-                return  new ResponseEntity<>("Login Failed", httpHeaders, HttpStatus.OK);
+                System.out.println("Login failed.");
+                return  new ResponseEntity<>("Fail", httpHeaders, HttpStatus.OK);
 
             }
 
@@ -74,6 +73,7 @@ public class UserController {
     @RequestMapping(value = "/registeruser", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto){
 
+        System.out.println("Someone is trying to register now.");
         User existedUser = userRepository.findByUserName(userDto.getUserName());
         HttpHeaders httpHeaders = new HttpHeaders();
 
@@ -84,7 +84,7 @@ public class UserController {
                     .buildAndExpand()
                     .toUri());
 
-            return new ResponseEntity<>("User with username " + userDto.getUserName() + " already existed.", httpHeaders, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Failed", httpHeaders, HttpStatus.OK);
 
         } else {
 
