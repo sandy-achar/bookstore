@@ -73,23 +73,32 @@ public class UserController {
 
     @RequestMapping(value = "/registeruser", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto){
+
         User existedUser = userRepository.findByUserName(userDto.getUserName());
         HttpHeaders httpHeaders = new HttpHeaders();
+
         if(existedUser != null){
+
             httpHeaders.setLocation(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .buildAndExpand()
                     .toUri());
+
             return new ResponseEntity<>("User with username " + userDto.getUserName() + " already existed.", httpHeaders, HttpStatus.BAD_REQUEST);
+
         } else {
+
             User user = new User(userDto.getUserName(), userDto.getPassword(), userDto.getFirstName(), userDto.getMiddleName(), userDto.getLastName(),
                     userDto.getStreet(), userDto.getCity(), userDto.getZipCode(), userDto.getState(), userDto.getCountry());
             userRepository.save(user);
+
             httpHeaders.setLocation(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .buildAndExpand()
                     .toUri());
+
             return new ResponseEntity<>("User Registered Successfully, user id : " + user.getUserId(), httpHeaders, HttpStatus.CREATED);
+
         }
     }
 
