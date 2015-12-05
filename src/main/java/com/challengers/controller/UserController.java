@@ -28,17 +28,46 @@ public class UserController {
         return objectMapper.writeValueAsString(userRepository.findAll());
     }
 
+    @RequestMapping(value = "/login", method = RequestMethod.POST)
+    public ResponseEntity<?> login(@RequestBody String userName){
+        User user = userRepository.findByUserName(userName);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        if(user != null){
+            httpHeaders.setLocation(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .buildAndExpand()
+                    .toUri());
+            return new ResponseEntity<>(user, httpHeaders, HttpStatus.OK);
+        }else {
+            httpHeaders.setLocation(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .buildAndExpand()
+                    .toUri());
+            return new ResponseEntity<>("User not Found with username " + userName, httpHeaders, HttpStatus.NOT_FOUND);
+        }
+
+    }
+
     @RequestMapping(value = "/registeruser", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto){
-        User user = new User(userDto.getUserName(), userDto.getPassword(), userDto.getFirstName(), userDto.getMiddleName(), userDto.getLastName(),
-                userDto.getStreet(), userDto.getCity(), userDto.getZipCode(), userDto.getState(), userDto.getCountry());
-        userRepository.save(user);
+        User existedUser = userRepository.findByUserName(userDto.getUserName());
         HttpHeaders httpHeaders = new HttpHeaders();
-        httpHeaders.setLocation(ServletUriComponentsBuilder
-                .fromCurrentRequest()
-                .buildAndExpand()
-                .toUri());
-        return new ResponseEntity<>("User Registered Successfully, user id : " + user.getUserId(), httpHeaders, HttpStatus.CREATED);
+        if(existedUser != null){
+            httpHeaders.setLocation(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .buildAndExpand()
+                    .toUri());
+            return new ResponseEntity<>("User with username " + userDto.getUserName() + " already existed.", httpHeaders, HttpStatus.BAD_REQUEST);
+        } else {
+            User user = new User(userDto.getUserName(), userDto.getPassword(), userDto.getFirstName(), userDto.getMiddleName(), userDto.getLastName(),
+                    userDto.getStreet(), userDto.getCity(), userDto.getZipCode(), userDto.getState(), userDto.getCountry());
+            userRepository.save(user);
+            httpHeaders.setLocation(ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .buildAndExpand()
+                    .toUri());
+            return new ResponseEntity<>("User Registered Successfully, user id : " + user.getUserId(), httpHeaders, HttpStatus.CREATED);
+        }
     }
 
     @RequestMapping(value = "/updateuser/{userId}", method = RequestMethod.POST)
@@ -69,7 +98,7 @@ public class UserController {
                     .fromCurrentRequest()
                     .buildAndExpand()
                     .toUri());
-            return new ResponseEntity<>("User not found, book Id : " + userId, httpHeaders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User not found, user Id : " + userId, httpHeaders, HttpStatus.NOT_FOUND);
         }
     }
 }

@@ -8,6 +8,6 @@ import org.springframework.data.jpa.repository.Query;
  * Created by Malika(mxp134930) on 11/6/2015.
  */
 public interface UserRepository extends JpaRepository<User, Long> {
-    User findByFirstName(String name);
+    User findByUserName(String name);
 
 }
