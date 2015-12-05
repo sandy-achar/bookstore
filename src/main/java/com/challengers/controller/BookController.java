@@ -27,16 +27,19 @@ public class BookController {
 
     @RequestMapping("/getbooks")
     public ResponseEntity<List<Book>> getAllBooks() throws JsonProcessingException {
+
+        System.out.println("\nRequesting all books.");
         List <Book> books = bookRepository.findAll();
-        //ObjectMapper objectMapper = new ObjectMapper();
-        //return objectMapper.writeValueAsString(bookRepository.findAll());
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
     @RequestMapping("/title/{bookTitle}")
-    public String getByName(@PathVariable String bookTitle) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bookRepository.findByBookTitle(bookTitle));
+    public ResponseEntity<List<Book>> getByName(@PathVariable String bookTitle) throws JsonProcessingException {
+
+        System.out.println("\nRequesting book with title: " + bookTitle);
+        List<Book> books = bookRepository.findByBookTitle(bookTitle);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+
     }
 
     @RequestMapping("/author/{authorName}")
