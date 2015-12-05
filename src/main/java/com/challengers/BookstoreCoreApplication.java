@@ -43,23 +43,23 @@ public class BookstoreCoreApplication {
 
         System.out.println("Books Created " + bookRepository.findAll().size());*/
 
-        UserRepository userRepository = applicationContext.getBean(UserRepository.class);
+        /*UserRepository userRepository = applicationContext.getBean(UserRepository.class);
         User user1 = new User("malika", "malika", "Malika Pahva", null, null, null, null, null, null, null);
         User user2 = new User("sandesh", "sandesh", "Sandesh", null, null, null, null, null, null, null);
         User user3 = new User("sufian", "sufian", "Sufian", null, null, null, null, null, null, null);
 
         // Add Users to database
         List<User> users = Arrays.asList(user1, user2, user3);
-        userRepository.save(users);
+        userRepository.save(users);*/
 
         //Delete a user
         //userRepository.delete(2725442848095386635L);
 
         //Find all users
-        List<User> all = userRepository.findAll();
+        /*List<User> all = userRepository.findAll();
         for (User user : all) {
             System.out.println(user.getPassword());
-        }
+        }*/
 
         //update name
        /* User userToUpdate = userRepository.findOne(4696283733126237149L);

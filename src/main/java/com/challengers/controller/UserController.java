@@ -1,5 +1,6 @@
 package com.challengers.controller;
 
+import com.challengers.LoginUser;
 import com.challengers.dto.UserDto;
 import com.challengers.entities.User;
 import com.challengers.repo.UserRepository;
@@ -29,21 +30,43 @@ public class UserController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ResponseEntity<?> login(@RequestBody String userName){
+    public ResponseEntity<?> login(@RequestBody LoginUser loginUser){
+
+        System.out.println("A login was attempted!");
+        System.out.println("userName: " + loginUser.getUserName());
+        System.out.println("password: " + loginUser.getPassword());
+
+        String userName = loginUser.getUserName();
+
         User user = userRepository.findByUserName(userName);
         HttpHeaders httpHeaders = new HttpHeaders();
         if(user != null){
+            System.out.println("User Name found!");
             httpHeaders.setLocation(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .buildAndExpand()
                     .toUri());
-            return new ResponseEntity<>(user, httpHeaders, HttpStatus.OK);
-        }else {
+
+            if (user.getPassword().equals(loginUser.getPassword())) {
+
+                return new ResponseEntity<>("Success Login!", httpHeaders, HttpStatus.OK);
+
+            } else {
+
+                System.out.println("The actual password: " + user.getPassword());
+                return  new ResponseEntity<>("Login Failed", httpHeaders, HttpStatus.OK);
+
+            }
+
+        } else {
+
             httpHeaders.setLocation(ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .buildAndExpand()
                     .toUri());
-            return new ResponseEntity<>("User not Found with username " + userName, httpHeaders, HttpStatus.NOT_FOUND);
+
+            //return new ResponseEntity<>("User not Found with username " + userName, httpHeaders, HttpStatus.NOT_FOUND);
+            return  new ResponseEntity<>("Login Failed", httpHeaders, HttpStatus.OK);
         }
 
     }

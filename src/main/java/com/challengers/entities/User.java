@@ -1,6 +1,5 @@
 package com.challengers.entities;
 
-
 import com.challengers.Encrypt;
 import com.challengers.util.UniqueIdGenerator;
 
