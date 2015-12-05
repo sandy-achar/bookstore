@@ -26,11 +26,12 @@ public class BookstoreCoreApplication {
         Transaction transaction = new Transaction(4696283733126237149L, bookTransactionInfos);
        // transactionRepository.save(transaction);
 
-       /* BookRepository bookRepository = applicationContext.getBean(BookRepository.class);
+        /*BookRepository bookRepository = applicationContext.getBean(BookRepository.class);
         bookRepository.deleteAll();
         System.out.println("books deleted#######################");
+
         List<Book> books = new ArrayList<>();
-        for(int i =0; i < 10000; i++) {
+        for(int i =0; i < 10; i++) {
             Set<String> authors = new HashSet<>();
             authors.add("John Benoit");
             authors.add("Tony Cole");

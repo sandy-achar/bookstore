@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.util.List;
+
 /**
  * Created by Malika(mxp134930) on 11/21/2015.
  */
@@ -24,9 +26,11 @@ public class BookController {
     private BookRepository bookRepository;
 
     @RequestMapping("/getbooks")
-    public String getAllBooks() throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bookRepository.findAll());
+    public ResponseEntity<List<Book>> getAllBooks() throws JsonProcessingException {
+        List <Book> books = bookRepository.findAll();
+        //ObjectMapper objectMapper = new ObjectMapper();
+        //return objectMapper.writeValueAsString(bookRepository.findAll());
+        return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
     @RequestMapping("/title/{bookTitle}")
