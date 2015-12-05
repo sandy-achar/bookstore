@@ -43,27 +43,39 @@ public class BookController {
     }
 
     @RequestMapping("/author/{authorName}")
-    public String getByAuthor(@PathVariable String authorName) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bookRepository.findByAuthorName(authorName));
+    public ResponseEntity<List<Book>> getByAuthor(@PathVariable String authorName) throws JsonProcessingException {
+
+        System.out.println("\nRequesting book with author name:" + authorName);
+        List<Book> books = bookRepository.findByAuthorName(authorName);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+
     }
 
     @RequestMapping("/publisher/{publisherName}")
-    public String getByPublisher(@PathVariable String publisherName) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bookRepository.findByPublisherName(publisherName));
+    public ResponseEntity<List<Book>> getByPublisher(@PathVariable String publisherName) throws JsonProcessingException {
+
+        System.out.println("\nRequesting book with publisher name:" + publisherName);
+        List<Book> books = bookRepository.findByPublisherName(publisherName);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+
     }
 
     @RequestMapping("/isbn/{isbn}")
-    public String getByIsbn(@PathVariable String isbn) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bookRepository.findByIsbn(isbn));
+    public ResponseEntity<Book> getByIsbn(@PathVariable String isbn) throws JsonProcessingException {
+
+        System.out.println("\nRequesting book with isbn:" + isbn);
+        Book book = bookRepository.findByIsbn(isbn);
+        return new ResponseEntity<>(book, HttpStatus.OK);
+
     }
 
     @RequestMapping("/language/{language}")
-    public String getByLanguage(@PathVariable String language) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.writeValueAsString(bookRepository.findByLanguage(language));
+    public ResponseEntity<List<Book>> getByLanguage(@PathVariable String language) throws JsonProcessingException {
+
+        System.out.println("\nRequesting book with language:" + language);
+        List<Book> books = bookRepository.findByLanguage(language);
+        return new ResponseEntity<>(books, HttpStatus.OK);
+
     }
 
     @RequestMapping(value = "/addbook", method = RequestMethod.POST)
