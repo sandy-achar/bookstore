@@ -1,6 +1,7 @@
 package com.challengers.entities;
 
 
+import com.challengers.Encrypt;
 import com.challengers.util.UniqueIdGenerator;
 
 import javax.persistence.*;
@@ -51,9 +52,14 @@ public class User implements Serializable {
     }
 
     public User(String userName, String password, String firstName, String middleName, String lastName, String street, String city, String zipCode, String state, String country) {
+
         this.userId = UniqueIdGenerator.generateId();
         this.userName = userName;
-        this.password = password;
+
+        //Encrypt password
+        Encrypt encryption = new Encrypt("Bar12345Bar12345");//128 bit key
+        this.password = encryption.encryption(password);
+
         this.firstName = firstName;
         this.middleName = middleName;
         this.lastName = lastName;
@@ -81,11 +87,17 @@ public class User implements Serializable {
     }
 
     public String getPassword() {
-        return password;
+
+        Encrypt encryption = new Encrypt("Bar12345Bar12345"); //128 bit key
+        return encryption.decryption(password);
+
     }
 
     public void setPassword(String password) {
-        this.password = password;
+
+        Encrypt encryption = new Encrypt("Bar12345Bar12345");
+        this.password = encryption.encryption(password);
+
     }
 
     public String getFirstName() {

@@ -47,6 +47,24 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<!-- Dependencies for encryption -->
+		<dependency>
+			<groupId>org.jasypt</groupId>
+			<artifactId>jasypt</artifactId>
+			<version>1.9.2</version>
+		</dependency>
+
+		<!-- Dependency for single sign on-->
+        <!-- storm path password: RockHard2
+        tenant: trusty-guardian2
+
+		<dependency>
+			<groupId>com.stormpath.spring</groupId>
+			<artifactId>spring-boot-starter-stormpath-thymeleaf</artifactId>
+			<version>1.0.RC4.5</version>
+		</dependency>
+        -->
 	</dependencies>
 	
 	<build>
