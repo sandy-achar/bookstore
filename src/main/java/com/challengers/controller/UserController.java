@@ -102,9 +102,9 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/updateuser/{userId}", method = RequestMethod.POST)
-    public ResponseEntity<?> updateUser(@PathVariable Long userId, @RequestBody UserDto userDto){
-        User user = userRepository.findOne(userId);
+    @RequestMapping(value = "/updateuser/{userName}", method = RequestMethod.POST)
+    public ResponseEntity<?> updateUser(@PathVariable String userName, @RequestBody UserDto userDto){
+        User user = userRepository.findByUserName(userName);
         HttpHeaders httpHeaders = new HttpHeaders();
         if(user != null){
             user.setUserName(userDto.getUserName());
@@ -130,7 +130,7 @@ public class UserController {
                     .fromCurrentRequest()
                     .buildAndExpand()
                     .toUri());
-            return new ResponseEntity<>("User not found, user Id : " + userId, httpHeaders, HttpStatus.NOT_FOUND);
+            return new ResponseEntity<>("User not found, user Name : " + userName, httpHeaders, HttpStatus.NOT_FOUND);
         }
     }
 }
