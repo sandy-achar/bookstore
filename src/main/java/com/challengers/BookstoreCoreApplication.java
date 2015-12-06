@@ -26,22 +26,23 @@ public class BookstoreCoreApplication {
         Transaction transaction = new Transaction(4696283733126237149L, bookTransactionInfos);
        // transactionRepository.save(transaction);
 
-        BookRepository bookRepository = applicationContext.getBean(BookRepository.class);
+        /*BookRepository bookRepository = applicationContext.getBean(BookRepository.class);
         bookRepository.deleteAll();
-        System.out.println("books deleted#######################");
+        System.out.println("books deleted#######################");*/
 
-        List<Book> books = new ArrayList<>();
+        /*List<Book> books = new ArrayList<>();
         /*for(int i =0; i < 10; i++) {
             Set<String> authors = new HashSet<>();
             authors.add("John Benoit");
             authors.add("Tony Cole");
-            Set<String> publishers = new HashSet<>();
+            Set<String> publishers = new HashSet<>();/*
             publishers.add("abc publications");
             Book book1 = new Book("NoSQL", authors, publishers, 2004, "abc123456789", "English", 30.50, 5, 2);
             books.add(book1);
         }*/
 
-        //Add some books with unique isbn
+
+        /*//Add some books with unique isbn
         Set<String> authors = new HashSet<>();
         authors.add("John Benoit");
         authors.add("Tony Cole");
@@ -60,7 +61,7 @@ public class BookstoreCoreApplication {
         books.add(book5);
         bookRepository.save(books);
 
-        System.out.println("Books Created " + bookRepository.findAll().size());
+        System.out.println("Books Created " + bookRepository.findAll().size()); */
 
         /*UserRepository userRepository = applicationContext.getBean(UserRepository.class);
         User user1 = new User("malika", "malika", "Malika Pahva", null, null, null, null, null, null, null);

@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.RequestEntity;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -78,10 +79,12 @@ public class BookController {
 
     }
 
-    @RequestMapping(value = "/addbook", method = RequestMethod.POST)
+    /*@RequestMapping(value = "/addbook", method = RequestMethod.POST)
     public ResponseEntity<?> addBook(@RequestBody BookDto bookDto){
+
         Book book = new Book(bookDto.getBookTitle(),bookDto.getAuthorNames(), bookDto.getPublisherNames(), bookDto.getPublishedYear(),
                 bookDto.getIsbn(), bookDto.getLanguage(), bookDto.getPrice(), bookDto.getQuantity(), bookDto.getSold());
+
         bookRepository.save(book);
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(ServletUriComponentsBuilder
@@ -89,6 +92,41 @@ public class BookController {
                 .buildAndExpand()
                 .toUri());
         return new ResponseEntity<>("Book Added Successfully, book id : " + book.getBookId(), httpHeaders, HttpStatus.CREATED);
+    }*/
+
+        @RequestMapping(value = "/addbook")
+    public ResponseEntity<?> addBook(@RequestBody BookDto book) {
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand()
+                .toUri());
+
+        Book checkBook = bookRepository.findByIsbn(book.getIsbn());
+
+        if (checkBook != null) {
+
+            //Then this book already exists
+            //We have to just increment the value of the quantity
+            int newQuantity = book.getQuantity() + checkBook.getQuantity();
+            checkBook.setQuantity(newQuantity);
+
+            String output = "Book already exists, updating the quantity to " + newQuantity;
+            return new ResponseEntity<>(output, httpHeaders, HttpStatus.OK);
+
+        } else {
+
+            //Only now we have to make a new book
+            Book newBook = new Book(book.getBookTitle(), book.getAuthorNames(), book.getPublisherNames(), book.getPublishedYear(),
+                    book.getIsbn(), book.getLanguage(), book.getPrice(), book.getQuantity(), book.getSold());
+
+            bookRepository.save(newBook);
+
+            String output = "A new book is created, with book id: " + newBook.getBookId();
+            return new ResponseEntity<>(output, httpHeaders, HttpStatus.CREATED);
+
+        }
     }
 
     @RequestMapping(value = "/updatebook/{bookId}", method = RequestMethod.POST)

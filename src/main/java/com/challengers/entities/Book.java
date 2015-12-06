@@ -146,5 +146,4 @@ public class Book implements Serializable {
         this.sold = sold;
     }
 
-
 }
