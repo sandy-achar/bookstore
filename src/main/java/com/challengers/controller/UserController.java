@@ -32,18 +32,19 @@ public class UserController {
     @RequestMapping(value = "/login", method = RequestMethod.POST)
     public ResponseEntity<?> login(@RequestBody LoginUser loginUser){
 
-        System.out.println("A login was attempted with username: " + loginUser.getUserName());
+        System.out.println("\nLogin was attempted with username: " + loginUser.getUserName());
 
         String userName = loginUser.getUserName();
 
         User user = userRepository.findByUserName(userName);
-        HttpHeaders httpHeaders = new HttpHeaders();
-        if(user != null){
 
-            httpHeaders.setLocation(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .buildAndExpand()
-                    .toUri());
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand()
+                .toUri());
+
+        if(user != null){
 
             if (user.getPassword().equals(loginUser.getPassword())) {
 
@@ -52,20 +53,16 @@ public class UserController {
 
             } else {
 
-                System.out.println("Login failed.");
+                System.out.println("Login failed. Wrong password.");
                 return  new ResponseEntity<>("Fail", httpHeaders, HttpStatus.OK);
 
             }
 
         } else {
 
-            httpHeaders.setLocation(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .buildAndExpand()
-                    .toUri());
-
-            //return new ResponseEntity<>("User not Found with username " + userName, httpHeaders, HttpStatus.NOT_FOUND);
+            System.out.println("Login failed. User doesnt exist");
             return  new ResponseEntity<>("Login Failed", httpHeaders, HttpStatus.OK);
+
         }
 
     }
@@ -73,17 +70,19 @@ public class UserController {
     @RequestMapping(value = "/registeruser", method = RequestMethod.POST)
     public ResponseEntity<?> registerUser(@RequestBody UserDto userDto){
 
-        System.out.println("Someone is trying to register now.");
+        System.out.println("\nSomeone is trying to register now.");
+
         User existedUser = userRepository.findByUserName(userDto.getUserName());
+
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand()
+                .toUri());
 
         if(existedUser != null){
 
-            httpHeaders.setLocation(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .buildAndExpand()
-                    .toUri());
-
+            System.out.println("Registration failed. User already exists!");
             return new ResponseEntity<>("Failed", httpHeaders, HttpStatus.OK);
 
         } else {
@@ -92,11 +91,7 @@ public class UserController {
                     userDto.getStreet(), userDto.getCity(), userDto.getZipCode(), userDto.getState(), userDto.getCountry());
             userRepository.save(user);
 
-            httpHeaders.setLocation(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .buildAndExpand()
-                    .toUri());
-
+            System.out.println("Registration successful. User id: " + user.getUserId());
             return new ResponseEntity<>("User Registered Successfully, user id : " + user.getUserId(), httpHeaders, HttpStatus.CREATED);
 
         }
@@ -104,8 +99,17 @@ public class UserController {
 
     @RequestMapping(value = "/updateuser/{userName}", method = RequestMethod.POST)
     public ResponseEntity<?> updateUser(@PathVariable String userName, @RequestBody UserDto userDto){
+
+        System.out.println("\nUpdate user with username: " + userName);
+
         User user = userRepository.findByUserName(userName);
+
         HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand()
+                .toUri());
+
         if(user != null){
             user.setUserName(userDto.getUserName());
             user.setPassword(userDto.getPassword());
@@ -119,18 +123,14 @@ public class UserController {
             user.setCountry(userDto.getCountry());
             userRepository.save(user);
 
-            httpHeaders.setLocation(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .buildAndExpand()
-                    .toUri());
+            System.out.println("Update to username: " + userName + " was successful.");
             return new ResponseEntity<>("User Updated Successfully", httpHeaders, HttpStatus.OK);
-        }
-        else {
-            httpHeaders.setLocation(ServletUriComponentsBuilder
-                    .fromCurrentRequest()
-                    .buildAndExpand()
-                    .toUri());
+
+        } else {
+
+            System.out.println("Update to username: " + userName + " was failed. User doesn't exist.");
             return new ResponseEntity<>("User not found, user Name : " + userName, httpHeaders, HttpStatus.NOT_FOUND);
+
         }
     }
 }
