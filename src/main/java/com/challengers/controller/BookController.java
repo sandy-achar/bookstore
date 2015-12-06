@@ -94,9 +94,10 @@ public class BookController {
         return new ResponseEntity<>("Book Added Successfully, book id : " + book.getBookId(), httpHeaders, HttpStatus.CREATED);
     }*/
 
-        @RequestMapping(value = "/addbook")
+    @RequestMapping(value = "/addbook")
     public ResponseEntity<?> addBook(@RequestBody BookDto book) {
 
+        System.out.println("\nTrying to add book with isbn: " + book.getIsbn());
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(ServletUriComponentsBuilder
                 .fromCurrentRequest()
@@ -112,7 +113,11 @@ public class BookController {
             int newQuantity = book.getQuantity() + checkBook.getQuantity();
             checkBook.setQuantity(newQuantity);
 
+            //Save the book in the database
+            bookRepository.save(checkBook);
+
             String output = "Book already exists, updating the quantity to " + newQuantity;
+            System.out.println(output);
             return new ResponseEntity<>(output, httpHeaders, HttpStatus.OK);
 
         } else {
@@ -124,11 +129,13 @@ public class BookController {
             bookRepository.save(newBook);
 
             String output = "A new book is created, with book id: " + newBook.getBookId();
+            System.out.println(output);
             return new ResponseEntity<>(output, httpHeaders, HttpStatus.CREATED);
 
         }
     }
 
+    /*
     @RequestMapping(value = "/updatebook/{bookId}", method = RequestMethod.POST)
     public ResponseEntity<?> updateBook(@PathVariable Long bookId, @RequestBody BookDto bookDto){
         Book book = bookRepository.findOne(bookId);
@@ -157,6 +164,45 @@ public class BookController {
                     .buildAndExpand()
                     .toUri());
             return new ResponseEntity<>("Book not found, book Id : " + bookId, httpHeaders, HttpStatus.NOT_FOUND);
+
+        }
+    }
+   */
+
+    @RequestMapping(value = "/updatebook/{isbn}")
+    public ResponseEntity<?> updateBook(@PathVariable String isbn, @RequestBody BookDto book) {
+
+        System.out.println("\nTrying to update book with isbn: " + book.getIsbn());
+        Book checkBook = bookRepository.findByIsbn(isbn);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.setLocation(ServletUriComponentsBuilder
+                .fromCurrentRequest()
+                .buildAndExpand()
+                .toUri());
+
+        if(checkBook != null) {
+
+            //Good, this book exists, we just need to update the book
+            checkBook.setBookTitle(book.getBookTitle());
+            checkBook.setAuthorNames(book.getAuthorNames());
+            checkBook.setPublisherNames(book.getPublisherNames());
+            checkBook.setPublishedYear(book.getPublishedYear());
+            checkBook.setIsbn(book.getIsbn());
+            checkBook.setLanguage(book.getLanguage());
+            checkBook.setPrice(book.getPrice());
+            checkBook.setQuantity(book.getQuantity());
+            checkBook.setSold(book.getSold());
+            bookRepository.save(checkBook);
+
+            System.out.println("Book updated successfully.");
+            return new ResponseEntity<>("Successful", httpHeaders, HttpStatus.OK);
+
+        } else {
+
+            //This book doesn't exist in the database
+            //Consider adding the book rather than update it!
+            System.out.println("Book update failed. Book with isbn: " + book.getIsbn() + " doesnt exist.");
+            return new ResponseEntity<>("Failed", httpHeaders, HttpStatus.OK);
 
         }
     }
